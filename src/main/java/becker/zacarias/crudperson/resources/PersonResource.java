@@ -58,12 +58,12 @@ public class PersonResource {
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<Optional<Person>> deleteById(@PathVariable Integer id) {
+	public ResponseEntity<Optional<PersonRequestDTO>> deleteById(@PathVariable Integer id) {
 		try {
 			personRepository.deleteById(id);
-			return new ResponseEntity<Optional<Person>>(HttpStatus.OK);
+			return new ResponseEntity<Optional<PersonRequestDTO>>(HttpStatus.OK);
 		} catch (NoSuchElementException nsee) {
-			return new ResponseEntity<Optional<Person>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Optional<PersonRequestDTO>>(HttpStatus.NOT_FOUND);
 		}
 	}
 
