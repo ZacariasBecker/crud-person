@@ -1,4 +1,4 @@
-package becker.zacarias.crudperson.resources;
+package becker.zacarias.crudperson.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,11 @@ import becker.zacarias.crudperson.repositories.PersonRepository;
 
 @RestController
 @RequestMapping(path = "/person")
-public class PersonResource {
+public class PersonController {
 
 	private PersonRepository personRepository;
 
-	public PersonResource(PersonRepository personRepository) {
+	public PersonController(PersonRepository personRepository) {
 		super();
 		this.personRepository = personRepository;
 	}
