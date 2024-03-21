@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import becker.zacarias.crudperson.models.Person;
+import becker.zacarias.crudperson.models.PersonRequestDTO;
 import becker.zacarias.crudperson.models.PersonResponseDTO;
 import becker.zacarias.crudperson.repositories.PersonRepository;
 
@@ -32,7 +33,8 @@ public class PersonResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Person> save(@RequestBody Person person) {
+	public ResponseEntity<PersonRequestDTO> save(@RequestBody Person data) {
+		Person personData = new Person();
 		personRepository.save(person);
 		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
