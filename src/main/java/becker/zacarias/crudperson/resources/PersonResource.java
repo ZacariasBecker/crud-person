@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import becker.zacarias.crudperson.models.Person;
+import becker.zacarias.crudperson.models.PersonResponseDTO;
 import becker.zacarias.crudperson.repositories.PersonRepository;
 
 @RestController
@@ -37,20 +38,20 @@ public class PersonResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Person>> getAll() {
-		List<Person> persons = new ArrayList<>();
-		persons = personRepository.findAll();
+	public ResponseEntity<List<PersonResponseDTO>> getAll() {
+		List<PersonResponseDTO> persons = new ArrayList<>();
+		persons = personRepository.findAll().stream().map(PersonResponseDTO::new).toList();
 		return new ResponseEntity<>(persons, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<Optional<Person>> getById(@PathVariable Integer id) {
-		Optional<Person> person;
+	public ResponseEntity<Optional<PersonResponseDTO>> getById(@PathVariable Integer id) {
+		Optional<PersonResponseDTO> person;
 		try {
-			person = personRepository.findById(id);
-			return new ResponseEntity<Optional<Person>>(person, HttpStatus.OK);
+			person = personRepository.findById(id).map(PersonResponseDTO::new);
+			return new ResponseEntity<Optional<PersonResponseDTO>>(person, HttpStatus.OK);
 		} catch (NoSuchElementException nsee) {
-			return new ResponseEntity<Optional<Person>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Optional<PersonResponseDTO>>(HttpStatus.NOT_FOUND);
 		}
 	}
 
