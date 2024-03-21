@@ -32,13 +32,6 @@ public class PersonResource {
 		this.personRepository = personRepository;
 	}
 
-	@PostMapping
-	public ResponseEntity<PersonRequestDTO> save(@RequestBody PersonRequestDTO data) {
-		Person personData = new Person(data);
-		personRepository.save(personData);
-		return new ResponseEntity<>(data, HttpStatus.OK);
-	}
-
 	@GetMapping
 	public ResponseEntity<List<PersonResponseDTO>> getAll() {
 		List<PersonResponseDTO> persons = new ArrayList<>();
@@ -57,21 +50,28 @@ public class PersonResource {
 		}
 	}
 
+	@PostMapping
+	public ResponseEntity<PersonResponseDTO> save(@RequestBody PersonRequestDTO data) {
+		Person personData = new Person(data);
+		personRepository.save(personData);
+		return new ResponseEntity<>(new PersonResponseDTO(personData), HttpStatus.OK);
+	}
+
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<Optional<PersonRequestDTO>> deleteById(@PathVariable Integer id) {
+	public ResponseEntity<Optional<PersonResponseDTO>> deleteById(@PathVariable Integer id) {
 		try {
 			personRepository.deleteById(id);
-			return new ResponseEntity<Optional<PersonRequestDTO>>(HttpStatus.OK);
+			return new ResponseEntity<Optional<PersonResponseDTO>>(HttpStatus.OK);
 		} catch (NoSuchElementException nsee) {
-			return new ResponseEntity<Optional<PersonRequestDTO>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Optional<PersonResponseDTO>>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Person> update(@PathVariable Integer id, @RequestBody Person newPerson) {
+	public ResponseEntity<Person> update(@PathVariable Integer id, @RequestBody PersonRequestDTO newPerson) {
 		return personRepository.findById(id).map(person -> {
-			person.setName(newPerson.getName());
-			person.setAge(newPerson.getAge());
+			person.setName(new Person(newPerson).getName());
+			person.setAge(new Person(newPerson).getAge());
 			Person personUpdated = personRepository.save(person);
 			return ResponseEntity.ok().body(personUpdated);
 		}).orElse(ResponseEntity.notFound().build());
