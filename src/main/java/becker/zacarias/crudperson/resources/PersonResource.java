@@ -68,13 +68,13 @@ public class PersonResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Person> update(@PathVariable Integer id, @RequestBody PersonRequestDTO newPerson) {
+	public ResponseEntity<PersonResponseDTO> update(@PathVariable Integer id, @RequestBody PersonRequestDTO newPerson) {
 		return personRepository.findById(id).map(person -> {
 			person.setName(new Person(newPerson).getName());
 			person.setAge(new Person(newPerson).getAge());
 			Person personUpdated = personRepository.save(person);
-			return ResponseEntity.ok().body(personUpdated);
+			return ResponseEntity.ok().body(new PersonResponseDTO(personUpdated));
 		}).orElse(ResponseEntity.notFound().build());
 	}
-
+	
 }
