@@ -33,10 +33,10 @@ public class PersonResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<PersonRequestDTO> save(@RequestBody Person data) {
-		Person personData = new Person();
-		personRepository.save(person);
-		return new ResponseEntity<>(person, HttpStatus.OK);
+	public ResponseEntity<PersonRequestDTO> save(@RequestBody PersonRequestDTO data) {
+		Person personData = new Person(data);
+		personRepository.save(personData);
+		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
 
 	@GetMapping
